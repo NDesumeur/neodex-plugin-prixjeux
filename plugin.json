@@ -1,0 +1,28 @@
+{
+  "id": "neodex.prixjeux",
+  "name": "Prix des jeux",
+  "version": "1.0.0",
+  "author": "NDesumeur",
+  "description": "Les jeux gratuits de la semaine sur l'Epic Games Store, les promos Steam du moment en euros, et ta liste de jeux à surveiller avec une alerte quand le prix descend sous ton seuil.",
+  "icon": "icon.png",
+  "entry": "index.js",
+  "view": "prixjeux",
+  "neobase": ">=4.0.0",
+  "type": "app",
+  "category": "Jeux",
+  "mobile": false,
+  "system": false,
+  "dependencies": {},
+  "autoload": true,
+  "sdk": "2.1.0",
+  "permissions": [
+    "storage",
+    "notifications",
+    "background",
+    "network:store.steampowered.com",
+    "network:*.steamstatic.com",
+    "network:store-site-backend-static.ak.epicgames.com",
+    "network:*.epicgames.com",
+    "network:cdn2.unrealengine.com"
+  ]
+}
