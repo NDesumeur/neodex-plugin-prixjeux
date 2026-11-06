@@ -1,7 +1,7 @@
 {
   "id": "neodex.prixjeux",
   "name": "Prix des jeux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "NDesumeur",
   "description": "Les jeux gratuits de la semaine sur l'Epic Games Store, les promos Steam du moment en euros, et ta liste de jeux à surveiller avec une alerte quand le prix descend sous ton seuil.",
   "icon": "icon.png",
