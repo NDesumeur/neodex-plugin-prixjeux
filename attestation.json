@@ -1,9 +1,9 @@
 {
   "pluginId": "neodex.prixjeux",
   "repo": "NDesumeur/neodex-plugin-prixjeux",
-  "version": "1.0.0",
-  "sha256": "2f2e49ec114bbaa2c68f271a49140aff9ba342377ae023da97bf50d5bc5eb5e7",
-  "approvedAt": "2026-11-05T09:33:04.815Z",
+  "version": "1.0.1",
+  "sha256": "bb2e023c269979750fa47d47328ab0653bf30abfbc51aff2660c82332351fe92",
+  "approvedAt": "2026-11-06T21:35:48.019Z",
   "neobase": ">=4.0.0",
-  "signature": "R6YZuGziUvoloj0GhVC9e2PgE/ljWGsidweqfB7ZJVDgiYuq0zltLQ6Y2fFN1ycNy76icWY6k0JEhkfyqV95Aw=="
+  "signature": "ks/5k5BGyK8COnkIhwiARPJZUmxPcgQOAXjKvDyLskWMPPdA1h5Ncs8tW97tprLOiB3wD/NAfvV+BxQoAI2VCg=="
 }
