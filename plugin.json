@@ -10,6 +10,8 @@
   "neobase": ">=4.0.0",
   "type": "app",
   "category": "Jeux",
+  "syncMode": "fusion",
+  "syncInfo": "Ta liste de souhaits et tes alertes de prix.",
   "mobile": false,
   "system": false,
   "dependencies": {},
