@@ -1,7 +1,7 @@
 {
   "id": "neodex.prixjeux",
   "name": "Prix des jeux",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "NDesumeur",
   "description": "Les jeux offerts sur l'Epic Games Store cette semaine et la suivante, les promos Steam du moment en euros classées par réduction, et ta liste de jeux Steam à surveiller avec un prix cible. La liste est vérifiée toutes les 3 heures, même onglet fermé : une notification arrive quand un jeu passe sous ton prix ou qu'un nouveau jeu gratuit sort.",
   "icon": "icon.png",
