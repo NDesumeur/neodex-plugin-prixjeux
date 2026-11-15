@@ -6,13 +6,15 @@ The games given away on the Epic Games Store, the current Steam sales with price
 
 ## Free
 
-The games currently given away by the Epic Games Store, with the offer's end date, and those announced for the following week (marked **Soon**, with their start date). A click opens the game's page.
+The games given away by the **Epic Games Store** this week and next. Below, the games given away **elsewhere** (GOG, Steam, itch.io…), found by GamerPower, with their shop. A **Prime Gaming** card opens the page of games given to Amazon Prime members (Amazon doesn't publish its list).
 
-## Steam sales
+## Deals
 
-The discounts featured by Steam (French store, prices in euros), from the biggest to the smallest: percentage, old and new price. **+ Follow** adds a game to your list.
+Three shops to pick from: **Steam** and **GOG** (prices in euros, French stores) and **Humble** (prices in dollars, from CheapShark). Each deal's **+ My list** button adds the game to your list in one click. For Humble, the same game's Steam price is followed.
 
 ## My list
+
+The search finds **Steam** and **GOG** games. Text is bigger everywhere.
 
 1. Search for a Steam game by name, or use **+ Follow** on a sale.
 2. Choose your **target price**: the notification arrives when the game drops to that amount or less.

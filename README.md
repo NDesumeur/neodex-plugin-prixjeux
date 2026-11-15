@@ -6,13 +6,15 @@ Les jeux offerts sur l'Epic Games Store, les promos Steam du moment avec leurs p
 
 ## Gratuits
 
-Les jeux offerts en ce moment par l'Epic Games Store, avec la date de fin de l'offre, et ceux annoncés pour la semaine suivante (marqués **Bientôt**, avec leur date de début). Un clic ouvre la page du jeu.
+Les jeux offerts par l'**Epic Games Store** cette semaine et la semaine prochaine. Dessous, les jeux offerts **ailleurs** (GOG, Steam, itch.io…), trouvés par GamerPower, avec leur boutique. Une carte **Prime Gaming** ouvre la page des jeux offerts aux abonnés Amazon Prime (Amazon ne publie pas sa liste).
 
-## Promos Steam
+## Promos
 
-Les réductions mises en avant par Steam (boutique française, prix en euros), de la plus grosse à la plus petite : pourcentage, ancien et nouveau prix. **+ Suivre** ajoute un jeu à ta liste.
+Trois boutiques au choix : **Steam** et **GOG** (prix en euros, boutiques françaises) et **Humble** (prix en dollars, donnés par CheapShark). Le bouton **+ Ma liste** de chaque promo ajoute le jeu à ta liste d'un clic. Pour Humble, c'est le prix du même jeu sur Steam qui est suivi.
 
 ## Ma liste
+
+La recherche trouve les jeux **Steam** et **GOG**. Les textes sont plus grands partout.
 
 1. Cherche un jeu Steam par son nom, ou utilise **+ Suivre** sur une promo.
 2. Choisis ton **prix cible** : la notification arrive quand le jeu descend à ce montant ou moins.
