@@ -17,7 +17,7 @@ const CSS = `#pjTabs{margin-left:auto}#pjTabs .btn.on{--c:var(--magenta);color:#
 .pjHits{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}.pjHit{display:grid;grid-template-columns:120px 1fr auto auto;gap:12px;align-items:center;font-size:16px;color:var(--lilac)}.pjHit img{width:120px;height:45px;object-fit:cover}
 .pjHit b{color:#fff;font-weight:500}.pjW{display:grid;grid-template-columns:120px 1fr 120px 150px auto;gap:12px;align-items:center;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:16px;color:var(--lilac)}
 .pjW img{width:120px;height:45px;object-fit:cover}.pjW b{color:#fff;font-weight:500}.pjW input{width:80px;font-size:16px;background:var(--bg2,#14102a);color:#fff;border:2px solid var(--line2,#3a2f6a);padding:4px}
-.pjW.hit{background:rgba(90,208,90,.1)}.pjW .ok{color:#5ad05a}
+.pjW.hit{background:rgba(90,208,90,.1)}.pjW .ok{color:#5ad05a}.pjW .low{display:block;font-size:13px;color:var(--lilac);margin-top:3px}.pjW .best{color:#5ad05a}
 .pjShops{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.pjShops .btn.on{--c:var(--magenta);color:#fff}
 .pjShop{font:13px var(--title);color:#05010b;background:#c8c0e8;padding:3px 6px}.pjShop.gog{background:#b07ae0}.pjShop.humble{background:#ff8a5a}.pjShop.prime{background:#3ab0ff}.pjShop.steam{background:#7ab8e8}
 .pjSub{font:18px var(--title);color:#fff;margin:26px 0 12px}
@@ -59,7 +59,7 @@ export default async function (ctx) {
   const $ = id => view.querySelector('#' + id);
   const doc = async n => { try { return await folder.read(n); } catch { return null; } };
   let data = (await doc('data')) || {watch: [], seenFree: []};  // watch : [{id, name, img, target, last, alerted}]
-  const save = () => folder.write('data', data).catch(() => {});
+  let saveT = 0; const save = () => { clearTimeout(saveT); saveT = setTimeout(() => folder.write('data', data).catch(() => {}), 250); };  // groupées : deux écritures trop proches se gênent sur Windows
   const json = async url => { const r = await ctx.net(url); if (!r.ok) throw new Error('le serveur répond ' + r.status); return JSON.parse(r.body); };  // par NeoDex : Steam et Epic n'acceptent pas les demandes venues d'une page
   const img = src => { const i = el('img'); i.src = src || ''; i.loading = 'lazy'; i.onerror = () => i.style.visibility = 'hidden'; return i; };
   const open = (node, url) => { node.style.cursor = 'var(--cp,pointer)'; node.title = 'Ouvrir la page du jeu'; node.onclick = e => { if (e.target.closest('button,input')) return; newTab(url); }; };
@@ -128,7 +128,7 @@ export default async function (ctx) {
     done(items.length);
   }
   const watching = id => data.watch.some(w => w.id === id);
-  function follow(g) { if (watching(g.id)) return; data.watch.push({id: g.id, shop: g.shop || 'steam', url: g.url || STEAM + 'app/' + g.id, name: g.name, img: g.img, target: Math.max(0, Math.floor((g.price || 0) * .8 / 100)), last: g.price ?? null, alerted: false}); save(); toast(g.name + ' est dans ta liste : prix cible ' + eur(data.watch.at(-1).target * 100)); }
+  function follow(g) { if (watching(g.id)) return; data.watch.push({low: g.price != null ? {p: g.price, t: Date.now()} : null, id: g.id, shop: g.shop || 'steam', url: g.url || STEAM + 'app/' + g.id, name: g.name, img: g.img, target: Math.max(0, Math.floor((g.price || 0) * .8 / 100)), last: g.price ?? null, alerted: false}); save(); toast(g.name + ' est dans ta liste : prix cible ' + eur(data.watch.at(-1).target * 100)); }
   async function prices(all) {  // les prix de plusieurs jeux en une demande par boutique : Steam, et GOG pour les « gog:… »
     const ids = all.filter(id => !String(id).startsWith('gog:')), gog = all.filter(id => String(id).startsWith('gog:')).map(id => id.slice(4)), out = {};
     if (ids.length) { const j = await json(STEAM + 'api/appdetails?appids=' + ids.join(',') + '&cc=fr&filters=price_overview');
@@ -136,6 +136,28 @@ export default async function (ctx) {
     if (gog.length) { const j = await json('https://api.gog.com/products/prices?ids=' + gog.join(',') + '&countryCode=FR&currency=EUR');
       for (const it of j?._embedded?.items || []) out['gog:' + it._embedded?.product?.id] = gogPrice(it._embedded?.prices?.[0]); }
     return out;
+  }
+  // le plus bas : celui que NeoDex a vu depuis que tu suis le jeu (en euros), et le plus bas jamais vu toutes boutiques confondues (CheapShark, en dollars, relu toutes les 12 h)
+  const seenLow = (w, p) => { if (p == null) return; if (!w.low || p < w.low.p) w.low = {p, t: Date.now()}; };
+  async function everLow(ws) {
+    const steam = ws.filter(w => typeof w.id === 'number' && (!w.evAt || Date.now() - w.evAt > 12 * 3600e3)).slice(0, 25);
+    for (const w of steam) if (w.cs == null) { try { w.cs = +((await json(CHEAP + 'games?steamAppID=' + w.id))[0]?.gameID || 0); } catch { return; } }
+    const ids = steam.filter(w => w.cs).map(w => w.cs); if (!ids.length) return;
+    const j = await json(CHEAP + 'games?ids=' + ids.join(',')).catch(() => null); if (!j) return;
+    for (const w of steam) { const g = w.cs && j[w.cs]; if (!g) continue; w.evAt = Date.now();
+      w.ever = g.cheapestPriceEver ? {p: Math.round(+g.cheapestPriceEver.price * 100), t: g.cheapestPriceEver.date * 1000} : null;
+      w.usd = (g.deals || []).length ? Math.min(...g.deals.map(d => Math.round(+d.price * 100))) : null; }
+  }
+  // la ligne sous le nom : « c'est le plus bas jamais vu » quand le prix du moment (en dollars) est à 5 % près du plus bas
+  const usdC = c => usd(c / 100), day = t => new Date(t).toLocaleDateString('fr-FR', {day: 'numeric', month: 'short', year: 'numeric'});
+  function lowLine(w) {
+    const line = el('span', 'low'), bits = [];
+    if (w.low) bits.push('plus bas suivi : ' + eur(w.low.p) + ' (' + day(w.low.t) + ')');
+    if (w.ever) bits.push('plus bas jamais vu : ' + usdC(w.ever.p) + ' (' + day(w.ever.t) + ')');
+    line.textContent = bits.join(' · ');
+    if (w.ever && w.usd != null && w.usd <= w.ever.p * 1.05) line.append(' · ', el('b', 'best', 'au plus bas historique'));
+    else if (w.ever && w.usd != null) line.append(' · ' + Math.round((w.usd / w.ever.p - 1) * 100) + ' % au-dessus');
+    return line;
   }
   async function watch(main) {
     const box = el('div', 'pjSearch'), q = el('input'), go = el('button', 'btn px', 'CHERCHER'), hits = el('div', 'pjHits');
@@ -156,17 +178,18 @@ export default async function (ctx) {
     box.append(q, go);
     const list = el('div', 'sysCard px'); list.append(el('span', 'label', 'Ma liste · ' + data.watch.length + ' jeu' + (data.watch.length > 1 ? 'x' : '')));
     if (!data.watch.length) list.append(el('div', 'hint', 'Ajoute un jeu avec la recherche ou le bouton « + MA LISTE » d\'une promo. Tu choisis ton prix : une notification arrive quand il est atteint.'));
-    const p = await prices(data.watch.map(w => w.id)).catch(() => ({}));
+    const p = await prices(data.watch.map(w => w.id)).catch(() => ({})); await everLow(data.watch).catch(() => {});
     for (const w of data.watch) {
       const cur = p[w.id], r = el('div', 'pjW'), t = el('input'), del = el('button', 'btn px', '✕');
-      if (cur) w.last = cur.final;
+      if (cur) { w.last = cur.final; seenLow(w, cur.final); }
       const hit = w.last != null && w.last <= w.target * 100; if (hit) r.classList.add('hit');
       t.type = 'number'; t.min = 0; t.value = w.target; t.title = 'Prévenir quand le prix descend à ce montant (en euros) ou moins';
       t.onchange = () => { w.target = Math.max(0, +t.value || 0); w.alerted = false; save(); render(); };
       del.title = 'Retirer de la liste'; del.onclick = () => { data.watch = data.watch.filter(x => x !== w); save(); render(); };
       const now = el('span'); now.append(w.last == null ? '—' : el('b', hit ? 'ok' : '', eur(w.last)), cur?.discount_percent ? ' (-' + cur.discount_percent + ' %)' : '');
       const tg = el('span'); tg.append('alerte à ', t, ' €');
-      r.append(img(w.img), el('b', '', w.name), now, tg, del); open(r, w.url || STEAM + 'app/' + w.id); list.append(r);
+      const nm = el('div'); nm.append(el('b', '', w.name), lowLine(w));
+      r.append(img(w.img), nm, now, tg, del); open(r, w.url || STEAM + 'app/' + w.id); list.append(r);
     }
     save(); main.replaceChildren(box, hits, list);
   }
@@ -175,7 +198,7 @@ export default async function (ctx) {
     try {
       const p = await prices(data.watch.map(w => w.id));
       for (const w of data.watch) {
-        const cur = p[w.id]; if (!cur) continue; w.last = cur.final;
+        const cur = p[w.id]; if (!cur) continue; w.last = cur.final; seenLow(w, cur.final);
         if (cur.final <= w.target * 100 && !w.alerted) { w.alerted = true; ctx.notifications?.send({title: w.name + ' : ' + eur(cur.final), body: (cur.discount_percent ? '-' + cur.discount_percent + ' % · ' : '') + 'sous ton prix de ' + eur(w.target * 100), open: w.url || STEAM + 'app/' + w.id}).catch(() => {}); }
         if (cur.final > w.target * 100) w.alerted = false;  // il remonte : on pourra prévenir à la prochaine baisse
       }

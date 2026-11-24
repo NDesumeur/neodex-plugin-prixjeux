@@ -4,6 +4,10 @@ Les jeux offerts sur l'Epic Games Store, les promos Steam du moment avec leurs p
 
 *English version: [README.en.md](README.en.md)*
 
+## Le prix le plus bas (nouveau en 1.2.0)
+
+Dans ta liste, le prix le plus bas vu depuis le suivi et, pour Steam, le plus bas jamais vu (CheapShark) : « au plus bas historique » quand la promo vaut vraiment le coup.
+
 ## Gratuits
 
 Les jeux offerts par l'**Epic Games Store** cette semaine et la semaine prochaine. Dessous, les jeux offerts **ailleurs** (GOG, Steam, itch.io…), trouvés par GamerPower, avec leur boutique. Une carte **Prime Gaming** ouvre la page des jeux offerts aux abonnés Amazon Prime (Amazon ne publie pas sa liste).
@@ -18,6 +22,7 @@ La recherche trouve les jeux **Steam** et **GOG**. Les textes sont plus grands p
 
 1. Cherche un jeu Steam par son nom, ou utilise **+ Suivre** sur une promo.
 2. Choisis ton **prix cible** : la notification arrive quand le jeu descend à ce montant ou moins.
+4. Sous le nom, le **plus bas** : le prix le plus bas que NeoDex a vu depuis que tu suis le jeu (en euros), et pour les jeux Steam le **plus bas jamais vu** toutes boutiques confondues (CheapShark, en dollars). « Au plus bas historique » s'affiche quand le prix du moment en est à 5 % près : la promo vaut vraiment le coup.
 3. Le prix actuel et ton seuil sont affichés pour chaque jeu ; tu peux changer le seuil ou **retirer** le jeu.
 
 La liste est vérifiée toutes les 3 heures, même quand l'onglet est fermé. Une notification NeoDex arrive quand un jeu passe sous ton prix, et aussi quand un nouveau jeu gratuit sort sur Epic.

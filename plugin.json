@@ -1,7 +1,7 @@
 {
   "id": "neodex.prixjeux",
   "name": "Prix des jeux",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "author": "NDesumeur",
   "description": "Les jeux offerts sur l'Epic Games Store cette semaine et la suivante, et ailleurs (GOG, Steam, Prime Gaming), les promos du moment sur Steam, GOG (en euros) et Humble (en dollars), et ta liste de jeux Steam et GOG à surveiller avec un prix cible, à remplir d'un clic depuis les promos. La liste est vérifiée toutes les 3 heures, même onglet fermé : une notification arrive quand un jeu passe sous ton prix ou qu'un nouveau jeu gratuit sort. Textes plus grands.",
   "icon": "icon.png",
